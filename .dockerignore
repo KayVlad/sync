@@ -1,0 +1,8 @@
+.git
+data
+.cache
+sync
+sync.exe
+coverage.out
+.env
+dist

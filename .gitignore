@@ -1,0 +1,11 @@
+/data/
+/sync
+/sync.exe
+/coverage.out
+/.cache/
+/.env
+/dist/
+
+# Runtime account and bootstrap credential files, including custom data directories.
+**/accounts.json
+**/admin-password

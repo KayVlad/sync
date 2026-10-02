@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101112">
+  <title>sync</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/sha256.js" defer></script>
+  <script src="/clipboard.js" defer></script>
+  <script src="/folders.js" defer></script>
+  <script src="/links.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12m-4-4 4 4 4-4M4 17v3h16v-3"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9zm0 0v6h5M9 14h6m-6 3h4"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 5h16M4 10h12M4 15h16M4 20h8"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m3 7 9-4 9 4v11l-9 4-9-4zm0 0 9 4 9-4M12 11v11M7 5l9 4"/></symbol>
+    <symbol id="i-network" viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="6" rx="1"/><path d="M12 9v5M5 17v-3h14v3"/><rect x="2" y="17" width="6" height="4" rx="1"/><rect x="16" y="17" width="6" height="4" rx="1"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6m2 4a5 5 0 0 1 3 4v3"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="8" r="5"/><path d="m12 12 9 9m-6-6 3-3m0 6 3-3"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 4H4v16h5m5-4 4-4-4-4m-5 4h13"/></symbol>
+  </svg>
+  <div class="shell">
+    <header>
+      <a class="brand" href="/" aria-label="sync home"><span class="brand-icon"><svg viewBox="0 0 24 24"><path d="M5 8h14l-4-4M19 16H5l4 4"/></svg></span>sync<span class="brand-period">.</span></a>
+      <div id="account-bar" class="account-bar" hidden><button id="sign-in" class="action-button" hidden>Sign in</button><span id="account-name"></span><button id="manage-users" class="icon-button" title="Manage users" aria-label="Manage users" hidden><svg><use href="#i-users"/></svg></button><button id="sign-out" class="icon-button" title="Sign out" aria-label="Sign out"><svg><use href="#i-logout"/></svg></button></div>
+    </header>
+
+    <section id="login-screen" class="login-screen" hidden>
+      <form id="login-form" class="login-form"><label for="login-username">Username</label><input id="login-username" autocomplete="username" placeholder="Username" maxlength="80" required><label for="login-password">Password</label><input id="login-password" type="password" autocomplete="current-password" placeholder="Password" required><p id="login-error" class="form-error" role="alert" hidden></p><button class="send-button" id="login-submit" type="submit">Sign in<svg><use href="#i-arrow"/></svg></button></form>
+    </section>
+    <main id="workspace" hidden>
+
+
+      <section class="send-panel" aria-label="Send something">
+        <div id="dropzone" class="dropzone">
+
+          <span class="drop-title">Drop files or folders</span>
+          <span class="drop-sub">choose <button type="button" id="choose-files">files</button> / <button type="button" id="choose-folder">folder</button></span>
+        </div>
+        <input id="file-input" type="file" multiple hidden>
+        <input id="folder-input" type="file" webkitdirectory multiple hidden>
+        <form id="note-form" class="composer">
+          <div class="composer-heading"><label for="note" class="sr-only">Text or clipboard</label><button id="read-clipboard" class="icon-button" type="button" title="Read clipboard" aria-label="Read clipboard"><svg><use href="#i-copy"/></svg></button></div>
+          <div class="draft-area"><div id="clipboard-suggestion" class="clipboard-suggestion" hidden aria-live="polite"></div><textarea id="note" placeholder="Type or paste…" spellcheck="false" aria-describedby="send-hint"></textarea></div>
+          <div id="draft-files" class="draft-files" hidden></div>
+          <div class="composer-bottom"><span id="send-hint">Ctrl / ⌘ + Enter to send</span><button class="send-button" id="send-note" type="submit" aria-label="Send" title="Send" disabled><svg><use href="#i-arrow"/></svg></button></div>
+        </form>
+      </section>
+
+      <section id="transfers" class="transfers" aria-label="Transfers" aria-live="polite"></section>
+
+      <section class="shared-section" aria-label="Shared items">
+        <div class="section-heading"><h2>Items <span id="item-count">0</span></h2></div>
+        <div id="load-error" class="load-error" role="alert" hidden>Couldn’t reach sync. Reconnecting…</div>
+        <div id="items" class="items"></div>
+        <div id="empty" class="empty" hidden><h3>Nothing here yet</h3></div>
+        <div id="loading" class="loading">Loading…</div>
+      </section>
+    </main>
+
+  </div>
+  <dialog id="users-dialog" aria-labelledby="users-title"><div class="dialog-heading"><h2 id="users-title">Users</h2><button id="close-users" class="icon-button" aria-label="Close user management"><svg><use href="#i-close"/></svg></button></div><div id="users-list"></div><form id="create-user" class="user-create"><input id="new-user-name" placeholder="Username" aria-label="New username" autocomplete="off" maxlength="80" required><input id="new-user-password" type="password" placeholder="Password" aria-label="New user password" autocomplete="new-password" required><select id="new-user-role" aria-label="New user role"><option value="user">User</option><option value="admin">Admin</option></select><button class="send-button" type="submit">Add user</button></form><p id="users-error" class="form-error" role="alert" hidden></p></dialog>
+  <dialog id="password-dialog" aria-labelledby="password-title"><div class="dialog-heading"><h2 id="password-title">Set password</h2><button id="close-password" class="icon-button" aria-label="Close password form"><svg><use href="#i-close"/></svg></button></div><form id="password-form"><label for="reset-password">New password</label><input id="reset-password" type="password" autocomplete="new-password" placeholder="Password" required><p id="password-error" class="form-error" role="alert" hidden></p><button class="send-button" type="submit">Save password</button></form></dialog>
+  <div id="drag-overlay" class="drag-overlay" hidden><svg><use href="#i-upload"/></svg><strong>Drop to send</strong></div>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

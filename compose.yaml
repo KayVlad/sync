@@ -1,0 +1,26 @@
+services:
+  sync:
+    build: .
+    ports:
+      - "${SYNC_PORT:-8080}:8080"
+    volumes:
+      - sync-data:/data
+    environment:
+      SYNC_MAX_FILE_BYTES: ${SYNC_MAX_FILE_BYTES:-21474836480}
+      SYNC_MAX_STORAGE_BYTES: ${SYNC_MAX_STORAGE_BYTES:-53687091200}
+      SYNC_ADMIN_USERNAME: ${SYNC_ADMIN_USERNAME:-admin}
+      SYNC_ADMIN_PASSWORD: ${SYNC_ADMIN_PASSWORD:-}
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+volumes:
+  sync-data:

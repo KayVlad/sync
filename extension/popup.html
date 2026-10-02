@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>sync.</title><link rel="stylesheet" href="popup.css"><script src="shared.js" defer></script><script src="store.js" defer></script><script src="links.js" defer></script><script src="popup.js" defer></script></head>
+<body>
+  <header><strong>sync<span>.</span></strong><nav id="tools" hidden><button id="sync-url" title="Send the current tab's URL">Sync URL</button><button id="refresh" title="Refresh" aria-label="Refresh">↻</button><button id="open-app" title="Open sync" aria-label="Open sync">↗</button><button id="logout" title="Sign out" aria-label="Sign out">×</button></nav></header>
+  <form id="login"><input id="server" type="url" aria-label="Server URL" placeholder="http://192.168.1.10:8080" autocomplete="url" required><input id="username" aria-label="Username" placeholder="Username" autocomplete="username" required><input id="password" type="password" aria-label="Password" placeholder="Password" autocomplete="current-password" required><button class="primary" id="sign-in">Sign in</button></form>
+  <main id="shelf" hidden><div id="account"></div>
+    <form id="composer"><textarea id="draft" aria-label="Text to send" placeholder="Paste or type…" rows="2"></textarea><div id="attachments" hidden></div><div class="composer-actions"><button id="choose-files" type="button">Files</button><input id="file-input" type="file" multiple hidden><button id="send-draft" class="primary" title="Send · Ctrl+Enter" aria-label="Send">↑</button></div></form>
+    <div class="filters"><input id="search" type="search" aria-label="Search contents" placeholder="Search" title="Search · Ctrl+F"><div id="categories" aria-label="Filter contents"><button type="button" data-category="text" aria-pressed="false">Text</button><button type="button" data-category="images" aria-pressed="false">Images</button><button type="button" data-category="files" aria-pressed="false">Files</button></div></div>
+    <div id="queue" aria-label="Transfers" hidden></div><div id="items" tabindex="-1" aria-label="Contents"></div><p id="empty" hidden>Nothing here yet</p>
+  </main>
+  <p id="status" role="status" hidden></p>
+</body></html>
